@@ -1,0 +1,44 @@
+# depslib dependency file v1.0
+1434308730 source:c:\users\sam\documents\cpp\chesstest\main.cpp
+	<iostream>
+	<exception>
+	<stdexcept>
+	"include/ChessBoard.h"
+	"include/BoardIO.h"
+
+1434309036 c:\users\sam\documents\cpp\chesstest\include\chessboard.h
+	<vector>
+	<sstream>
+	<stdlib.h>
+	"BoardConstants.h"
+	"ChessMove.h"
+
+1434309206 source:c:\users\sam\documents\cpp\chesstest\src\chessboard.cpp
+	"ChessBoard.h"
+
+1434306422 c:\users\sam\documents\cpp\chesstest\include\boardio.h
+	<iostream>
+	<fstream>
+	<exception>
+	<stdexcept>
+	"ChessMove.h"
+	"ChessBoard.h"
+
+1434306689 source:c:\users\sam\documents\cpp\chesstest\src\boardio.cpp
+	"BoardIO.h"
+
+1432676478 c:\users\sam\documents\cpp\chesstest\include\boardconstants.h
+
+1434308612 c:\users\sam\documents\cpp\chesstest\include\chessmove.h
+	"BoardConstants.h"
+
+1433075100 source:c:\users\sam\documents\cpp\chesstest\src\chessmove.cpp
+	"ChessMove.h"
+
+1433081736 source:c:\users\sam\documents\cpp\chesstest\src\tests.cpp
+	"Tests.h"
+
+1432997231 c:\users\sam\documents\cpp\chesstest\include\tests.h
+	"ChessBoard.h"
+	"BoardIO.h"
+
