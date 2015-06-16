@@ -11,47 +11,53 @@ SearchTree::~SearchTree()
 }
 
 ChessMove SearchTree::findBestMove(ChessBoard& board, int color, int depth) {
-	vector<ChessMove> validMoves=board.getMoves(color);
-	sort(validMoves.begin(),validMoves.end(),compareMovesHighestScoreFirst);
 	float INFINITY=numeric_limits<float>::infinity();
-	alphaBetaSearch(board,0,color,depth,-INFINITY,INFINITY,true);
+	return alphaBetaSearch(board,0,color,depth,-INFINITY,INFINITY,true).chessMove;
 }
 
-float SearchTree::alphaBetaSearch(ChessBoard& board,float boardValue, int color, int depth, float alpha, float beta, bool isPlayer) {
+SearchValue SearchTree::alphaBetaSearch(ChessBoard& board,float boardValue, int color, int depth, float alpha, float beta, bool isPlayer) {
 	if (depth==0) return value;
 
 	vector<ChessMove> validMoves=board.getMoves(isPlayer?color:getOpponent(color));
 	if (validMoves.size()==0) return value;
 	sort(validMoves.begin(),validMoves.end(),compareMovesHighestScoreFirst);
 
-	float v;
+	float score=0;
 	float newBoardValue;
-	float INFINITY=numeric_limits<float>::infinity();
+	ChessMove *chosenMove;
+	bool isFirst=true;
 	if (isPlayer) {
-		v=-INFINITY;
 		for (vector<ChessMove>::iterator moveIter=validMoves.begin();moveIter!=validMoves.end();moveIter++) {
 			ChessBoard newBoard=board;
 			newBoard.applyMove(*moveIter);
 			newBoardValue=boardValue+moveHeuristic(*moveIter);
 
-			v=max(v,alphaBetaSearch(newBoard,newBoardValue,color,depth-1,alpha,beta,false))
-			alpha=max(alpha,v);
+			float childScore=alphaBetaSearch(newBoard,newBoardValue,color,depth-1,alpha,beta,false).score;
+			if (isFirst||childScore>score) {
+				score=childScore;
+				chosenMove=moveIter;
+				isFirst=false;
+			}
+			alpha=max(alpha,score);
 			if (beta<=alpha) break;
 		}
-		return v;
 	} else {
-		v=INFINITY;
 		for (vector<ChessMove>::iterator moveIter=validMoves.begin();moveIter!=validMoves.end();moveIter++) {
 			ChessBoard newBoard=board;
 			newBoard.applyMove(*moveIter);
 			newBoardValue=boardValue-moveHeuristic(*moveIter);
 
-			v=min(v,alphaBetaSearch(newBoard,newBoardValue,color,depth-1,alpha,beta,true))
-			beta=min(beta,v);
+			float childScore=alphaBetaSearch(newBoard,newBoardValue,color,depth-1,alpha,beta,true).score;
+			if (isFirst||childScore<score) {
+				score=childScore;
+				chosenMove=moveIter;
+				isFirst=false;
+			}
+			beta=min(beta,score);
 			if (beta<=alpha) break;
-			return v;
 		}
 	}
+	return new SearchValue(*chosenMove,score);
 }
 
 float pieceValue(int piece) {

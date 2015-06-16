@@ -4,10 +4,10 @@
 #include <algorithm>
 #include <vector>
 
-struct SearchNode {
+struct SearchValue {
 	ChessMove chessMove;
 	float score;
-	vector<SearchNode> children;
+	SearchValue(ChessMove _chessMove, float _score) : chessMove(_chessMove), score(_score) {};
 };
 
 class SearchTree {
@@ -16,7 +16,7 @@ class SearchTree {
 		virtual ~SearchTree();
 
 		ChessMove findBestMove(ChessBoard &board, int color, int depth);
-		float alphaBetaSearch(ChessBoard &board, int color, int depth, int alpha, int beta, bool isPlayer);
+		SearchValue alphaBetaSearch(ChessBoard &board, int color, int depth, int alpha, int beta, bool isPlayer);
 	protected:
 	private:
 };
