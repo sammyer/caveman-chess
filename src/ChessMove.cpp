@@ -20,3 +20,12 @@ int ChessMove::isCastlingMove() {
 	}
 	return 0;
 }
+
+bool ChessMove::isCastlingPrevented() {
+	if (allowedCastlingDiff==0) return false;
+	if (isCastlingMove()) return false;
+	int mask;
+	if (getColor(piece)==WHITE) mask=BIT_CASTLE_WQ+BIT_CASTLE_WK;
+	else mask=BIT_CASTLE_BQ+BIT_CASTLE_BK;
+	return (allowedCastlingDiff&mask)>0;
+}

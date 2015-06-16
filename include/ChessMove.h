@@ -20,6 +20,7 @@ class ChessMove
 		bool isValid;
 
 		int isCastlingMove();
+		bool isCastlingPrevented();
 
 	protected:
 	private:
