@@ -6,7 +6,7 @@ ChessMove::ChessMove(Position _from, Position _to, int _piece, int _capture) :
 
 ChessMove::ChessMove():
 	from(Position(0,0)),to(Position(0,0)),piece(0),capture(0),
-		allowedCastlingDiff(0), isEnPassant(false), isValid(true) {};
+		allowedCastlingDiff(0), isEnPassant(false), isValid(false) {};
 
 ChessMove::~ChessMove() {
 	//dtor

@@ -16,15 +16,16 @@ ChessMove SearchTree::findBestMove(ChessBoard& board, int color, int depth) {
 }
 
 SearchValue SearchTree::alphaBetaSearch(ChessBoard& board,float boardValue, int color, int depth, float alpha, float beta, bool isPlayer) {
-	if (depth==0) return value;
+	if (depth==0) return SearchValue(ChessMove(),boardValue);
 
-	vector<ChessMove> validMoves=board.getMoves(isPlayer?color:getOpponent(color));
-	if (validMoves.size()==0) return value;
+	vector<ChessMove> validMoves;
+	board.getMoves(isPlayer?color:getOpponent(color),validMoves);
+	if (validMoves.size()==0) return SearchValue(ChessMove(),boardValue);
 	sort(validMoves.begin(),validMoves.end(),compareMovesHighestScoreFirst);
 
 	float score=0;
 	float newBoardValue;
-	ChessMove *chosenMove;
+	ChessMove *chosenMove=NULL;
 	bool isFirst=true;
 	if (isPlayer) {
 		for (vector<ChessMove>::iterator moveIter=validMoves.begin();moveIter!=validMoves.end();moveIter++) {
@@ -35,7 +36,7 @@ SearchValue SearchTree::alphaBetaSearch(ChessBoard& board,float boardValue, int 
 			float childScore=alphaBetaSearch(newBoard,newBoardValue,color,depth-1,alpha,beta,false).score;
 			if (isFirst||childScore>score) {
 				score=childScore;
-				chosenMove=moveIter;
+				chosenMove=&(*moveIter);
 				isFirst=false;
 			}
 			alpha=max(alpha,score);
@@ -50,14 +51,14 @@ SearchValue SearchTree::alphaBetaSearch(ChessBoard& board,float boardValue, int 
 			float childScore=alphaBetaSearch(newBoard,newBoardValue,color,depth-1,alpha,beta,true).score;
 			if (isFirst||childScore<score) {
 				score=childScore;
-				chosenMove=moveIter;
+				chosenMove=&(*moveIter);
 				isFirst=false;
 			}
 			beta=min(beta,score);
 			if (beta<=alpha) break;
 		}
 	}
-	return new SearchValue(*chosenMove,score);
+	return SearchValue(*chosenMove,score);
 }
 
 float pieceValue(int piece) {
@@ -81,6 +82,8 @@ float moveHeuristic(ChessMove &chessMove) {
 	if (getColor(chessMove.piece)==WHITE) yAdvance=-yAdvance;
 	int xMovesTowardCenter=distanceToCenter(chessMove.from.x)-distanceToCenter(chessMove.to.x);
 	score+=yAdvance*0.04f+xMovesTowardCenter*0.04f;
+
+	return score;
 }
 
 int distanceToCenter(int pos) {
