@@ -5,6 +5,7 @@
 
 #include "ChessBoard.h"
 #include "BoardIO.h"
+#include "SearchTree.h"
 
 class Tests
 {
@@ -14,5 +15,11 @@ class Tests
 	protected:
 	private:
 };
+
+void abstractGame(ChessMove (*whitePlayer)(ChessBoard &,int),ChessMove (*blackPlayer)(ChessBoard &,int));
+ChessMove randomPlayer(ChessBoard &board, int color);
+ChessMove aiPlayer(ChessBoard &board, int color);
+ChessMove consolePlayer(ChessBoard &board, int color);
+void consoleGame();
 
 #endif // TESTS_H
