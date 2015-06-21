@@ -216,12 +216,15 @@ void ChessBoard::getMovesForPiece(int x, int y,vector<ChessMove> &moves) {
 		int direction=color==WHITE?-1:1;
 		int homeRow=color==WHITE?6:1;
 
-		if (get(x,y+direction)==EMPTY) addMove(moves,x,y,x,y+direction);
+		if (get(x,y+direction)==EMPTY)
+			addMove(moves,x,y,x,y+direction);
+			//double move
+			if (y==homeRow&&get(x,y+direction*2)==EMPTY) addMove(moves,x,y,x,y+direction*2);
+		}
 		//diagonal attack
 		if (getColor(get(x+1,y+direction))==opponent) addMove(moves,x,y,x+1,y+direction);
 		if (getColor(get(x-1,y+direction))==opponent) addMove(moves,x,y,x-1,y+direction);
-		//double move
-		if (y==homeRow&&get(x,y+direction*2)==EMPTY) addMove(moves,x,y,x,y+direction*2);
+
 		//en-passant
 		if (pawnPassant.x>0&&pawnPassant.y==y+direction) {
 			if (pawnPassant.x==x+1) addMove(moves,x,y,x+1,y+direction);
